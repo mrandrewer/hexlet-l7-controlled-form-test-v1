@@ -38,7 +38,7 @@ const renderForm = (container) => {
   <label for="inputEmail">Email</label>
   <input type="text" class="form-control" id="inputEmail" placeholder="Введите email" name="email" required>
 </div>
-<input type="submit" value="Submit" class="btn btn-primary">`;
+<input type="submit" value="Submit" id="inputSubmit" class="btn btn-primary">`;
 
   container.replaceChildren(form);
   return form;
@@ -102,6 +102,7 @@ const app = () => {
         },
       },
       errors: {},
+      valid: true,
       response: '',
     },
   };
@@ -113,15 +114,19 @@ const app = () => {
       name: document.getElementById('inputName'),
       email: document.getElementById('inputEmail'),
     },
+    submitButton: document.getElementById('inputSubmit'),
   };
 
-  const watchedState = onChange(state, (path) => {
+  const watchedState = onChange(state, (path, value) => {
     switch (path) {
       case 'form.processState':
         handleFormState(elements, watchedState);
         break;
       case 'form.errors':
         handleFormErrors(elements, watchedState);
+        break;
+      case 'form.valid':
+        elements.submitButton.disabled = !value;
         break;
       default:
         break;
@@ -137,6 +142,7 @@ const app = () => {
       watchedState.form.fieldsUi.touched[fieldName] = true;
       const errors = validate(watchedState.form.field);
       watchedState.form.errors = errors;
+      watchedState.form.valid = _.isEmpty(errors);
     });
   });
 
