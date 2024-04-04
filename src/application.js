@@ -1,20 +1,21 @@
-import onChange from 'on-change';
-import i18next from 'i18next';
-
-const render = (container, state, i18n) => {
-
+const renderForm = (container) => {
+  const form = document.createElement('form');
+  form.id = 'registrationForm';
+  form.innerHTML = `<div class="form-group">
+  <label for="inputName">Name</label>
+  <input type="text" class="form-control" id="inputName" placeholder="Введите ваше имя" name="name" required>
+</div>
+<div class="form-group">
+  <label for="inputEmail">Email</label>
+  <input type="text" class="form-control" id="inputEmail" placeholder="Введите email" name="email" required>
+</div>
+<input type="submit" value="Submit" class="btn btn-primary">`;
+  container.replaceChildren(form);
 };
 
 const app = () => {
-  const state = {};
-
-  const container = null;
-
-  const i18nextInstance = i18next.createInstance();
-
-  const watchState = onChange(state, () => render(container, watchState, i18nextInstance));
-
-  render(container, watchState, i18nextInstance)
+  const container = document.querySelector('.form-container');
+  renderForm(container);
 };
 
 export default app;
